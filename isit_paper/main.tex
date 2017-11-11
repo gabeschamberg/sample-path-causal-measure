@@ -1,0 +1,121 @@
+\documentclass[conference]{IEEEtran}
+\pdfoutput=1
+
+\usepackage[sorting=none,style=ieee,backend=bibtex]{biblatex}
+\addbibresource{references.bib}
+
+\usepackage{amsmath}
+\usepackage{amsbsy}
+\usepackage[noend]{algpseudocode}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{eqnarray}
+\usepackage{multicol}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{units}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{vwcol}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{footnote}
+\usepackage{blkarray}
+\usepackage{comment}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{example}{Example}[section]
+\captionsetup[table]{position=below}
+\def\tablename{Table}
+\makesavenoteenv{tabular}
+\makesavenoteenv{table}
+
+\allowdisplaybreaks
+
+\ifCLASSINFOpdf
+
+%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\mbf}[1]{\ensuremath{\mathbf{#1}}}
+\newcommand{\bs}[1]{\ensuremath{\boldsymbol{#1}}}
+\newcommand{\mc}[1]{\ensuremath{\mathcal{#1}}}
+\newcommand{\cxy}{\ensuremath{C_{X\rightarrow Y}}}
+\newcommand{\cyx}{\ensuremath{C_{Y\rightarrow X}}}
+\newcommand{\estcxy}{\ensuremath{\hat{C}_{X\rightarrow Y}}}
+\newcommand{\estcyx}{\ensuremath{\hat{C}_{Y\rightarrow X}}}
+\newcommand{\optcxy}{\ensuremath{C^*_{X\rightarrow Y}}}
+\newcommand{\optcyx}{\ensuremath{C^*_{Y\rightarrow X}}}
+\newcommand{\fxr}[1]{\ensuremath{f_{X_#1}^{(r)}}}
+\newcommand{\fxc}[1]{\ensuremath{f_{X_#1}^{(c)}}}
+\newcommand{\fyr}[1]{\ensuremath{f_{Y_#1}^{(r)}}}
+\newcommand{\fyc}[1]{\ensuremath{f_{Y_#1}^{(c)}}}
+\newcommand{\estfxr}[1]{\ensuremath{\hat{f}_{X_#1}^{(r)}}}
+\newcommand{\estfxc}[1]{\ensuremath{\hat{f}_{X_#1}^{(c)}}}
+\newcommand{\estfyr}[1]{\ensuremath{\hat{f}_{Y_#1}^{(r)}}}
+\newcommand{\estfyc}[1]{\ensuremath{\hat{f}_{Y_#1}^{(c)}}}
+\newcommand{\optfxr}[1]{\ensuremath{f_{X_#1}^{(r)*}}}
+\newcommand{\optfxc}[1]{\ensuremath{f_{X_#1}^{(c)*}}}
+\newcommand{\optfyr}[1]{\ensuremath{f_{Y_#1}^{(r)*}}}
+\newcommand{\optfyc}[1]{\ensuremath{f_{Y_#1}^{(c)*}}}
+\newcommand{\history}[1]{\ensuremath{\mc{H}_#1}}
+\newcommand{\hr}[1]{\ensuremath{\history{i}^{(r)}}}
+\newcommand{\hc}[1]{\ensuremath{\history{i}^{(c)}}}
+\newcommand{\kl}[2]{\ensuremath{D(#1 \mid \mid #2)}}
+\newcommand{\argmin}[1]{\ensuremath{\underset{#1}{\operatorname{argmin}}}}
+\newcommand{\argmax}[1]{\ensuremath{\underset{#1}{\operatorname{argmax}}}}
+\newcommand{\refclass}{\ensuremath{\tilde{\mc{P}}}}
+\newcommand{\refclassr}{\ensuremath{\refclass^{(r)}}}
+\newcommand{\refclassc}{\ensuremath{\refclass^{(c)}}}
+\newcommand{\mcal}[1]{\ensuremath{\mathcal{#1}}}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+\title{A Sample Path Measure of Causal Influence}
+%
+
+\author{
+Gabriel~Schamberg,
+Todd~P.~Coleman
+}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{abstract}
+
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Note that keywords are not normally used for peerreview papers.
+\begin{IEEEkeywords}
+Granger Causality, KL-Divergence, Sequential Prediction, Markov Chains.
+\end{IEEEkeywords}
+
+\IEEEpeerreviewmaketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{01-Introduction}
+\input{02-SamplePathMeasure}
+\input{03-EstimatingCausalMeasure}
+\input{04-DiscreteMarkovChains}
+\input{05-Discussion}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifCLASSOPTIONcaptionsoff
+  \newpage
+\fi
+
+\end{document}
+
+

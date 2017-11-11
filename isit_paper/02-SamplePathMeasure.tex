@@ -1,0 +1,83 @@
+\section{Sample Path Measure of Causal Influence}
+
+\textcolor{red}
+{\begin{itemize}
+    \item Definition
+    \item True Causal Measure is random
+    \item Works in an online fashion
+\end{itemize}}
+
+We begin by defining arbitrary measurable spaces \mcal{X}, \mcal{Y}, and \mcal{Z}. Suppose we observe the stochastic processes $X^n \in \mcal{X}^n$, $Y^n \in \mcal{Y}^n$, and $Z^n \in \mcal{Z}^n$, characterized by the joint probability density function (pdf) $f_{X^n,Y^n,Z^n}(x^n,y^n,z^n)$. We begin by considering the scenario where, having observed $(x^{i-1},y^{i-1},z^{i-1})$, we wish to determine the causal influence that $y^{i-1}$ has the next observation $x^i$. In such a scenario, we consider the following \emph{restricted} (denoted $(r)$) and \emph{complete} (denoted $(c)$) conditional densities:
+
+\begin{eqnarray}
+\fxr{i}(x_i) \triangleq f_{X_i \mid X^{i-1},Z^{i-1}}
+    (x_i \mid x^{i-1},z^{i-1}) \\
+\fxc{i}(x_i) \triangleq f_{X_i \mid X^{i-1},Y^{i-1},Z^{i-1}}
+    (x_i \mid x^{i-1},y^{i-1},z^{i-1}).
+\end{eqnarray}
+
+\noindent Using these densities, at each time $i$ we define the sample path measure of causality from $Y$ to $X$ for a given  realizations $(x^{i-1},y^{i-1},z^{i-1})$ as:
+
+\begin{equation}
+\cyx(i) = \kl{\fxc{i}}{\fxr{i}}.
+\end{equation}
+
+The key observation that must be made that \fxc{i} and \fxr{i} are determined by the realizations of $X$, $Y$, and $Z$. As a result, \emph{the causal measure is a random variable}. In this regard, our causal measure is different from previous measures of causality wherein the causal influence is determined by the model, and not the sample path. To ensure this point is made clear, we will present an example.
+
+\begin{example}
+Suppose $Y_i \sim \text{Bern}(0.5)$ iid for $i=1,2,\dots$ and:
+
+\begin{equation}
+X_i \sim
+\begin{cases}
+      \text{Bern}(0.9), & Y_{i-1} = 1 \\
+      \text{Bern}(0.5), & Y_{i-1} = 0
+\end{cases}
+\end{equation}
+
+\noindent Next we note that for all $i=1,2, \dots$, we have:
+
+\begin{equation}
+\begin{aligned}
+\mathbb{P}(X_i = 1)
+&= \sum_{y_{i-1}\in \{0,1\}}
+    \mathbb{P}(X_i =1 \mid Y_{i-1} = y_{i-1}) \mathbb{P}(Y_{i-1} = y_{i-1}) \\
+&= (0.5)(0.5) + (0.9)(0.5) \\
+&= 0.7
+\end{aligned}
+\end{equation}
+
+\begin{comment}
+\noindent This process can be equivalently characterized by the four-state ``complete'' Markov Chain with states $(X,Y) \in \{0,1\}^2$ and transition matrix:
+
+\begin{equation}
+M^{(c)} =
+\begin{blockarray}{ccccc}
+(0,0) & (0,1) & (1,0) & (1,1) \\
+\begin{block}{(cccc)c}
+    0.25 & 0.1 & 0.25 & 0.1 & (0,0) \\
+    0.25 & 0.9 & 0.25 & 0.9 & (0,1) \\
+    0.25 & 0.1 & 0.25 & 0.1 & (1,0) \\
+    0.25 & 0.9 & 0.25 & 0.9 & (1,1) \\
+\end{block}
+\end{blockarray}
+\end{equation}
+
+\noindent where $M^{(c)}_{kj}$ represents the probability of having $(X_i,Y_i)$ in state $k$ given that $(X_{i-1},Y_{i-1})$ is in state $j$. We can additionally define a two-state ``restricted'' Markov Chain with states $X \in \{0,1\}$ and transition matrix:
+
+\begin{equation}
+M^{(r)} =
+\begin{blockarray}{ccc}
+0 & 1 \\
+\begin{block}{(cc)c}
+    0.3 & 0.3 & 0 \\
+    0.7 & 0.7 & 1 \\
+\end{block}
+\end{blockarray}
+\end{equation}
+\end{comment}
+
+
+\textcolor{red}{We can figure out the steady state distribution and the directed information rate. Then, we'll impose an initial state distribution and figure out our causal measure, which is much higher for times when $Y_{i-1} = 1$! Lastly, we can show that the information density is negative for $Y_{i-1} = 1 \rightarrow X_i = 0$. }
+
+\end{example}
