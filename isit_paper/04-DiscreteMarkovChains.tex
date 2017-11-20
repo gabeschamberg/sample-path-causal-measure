@@ -1,8 +1,97 @@
-\section{Application to Discrete Markov Chains}
+\section{Simulations}
 
 \textcolor{red}
 {\begin{itemize}
-    \item Application to conditional bernoulli model using CTW algorithm
-    \item Explicit derivation of bounds
-    \item Use changing environment meta algorithm for changing parameters
+    \item Application to conditional bernoulli model using CTW algorithm (Fig 1)
+    \item Explicit derivation of bounds and computation of regret
+    \item Use changing environment meta algorithm for changing parameters to demonstrate that it appears to work even though theorem doesn't apply (Fig 2)
 \end{itemize}}
+
+We begin by demonstrating the estimation of the proposed causal measure on a collection of jointly $k^{th}$-order Markov binary processes $\{X\}$, $\{Y\}$, and $\{Z\}$. In particular, for each of the three processes, we fully characterize the conditional pmf by the probability of observing a one given the most recent $k$ samples of all three processes:
+
+\begin{equation}
+p^{(c)}_{X_i},p^{(c)}_{Y_i},p^{(c)}_{Z_i} : \mcal{X}^k \times \mcal{Y}^k \times \mcal{Z}^k \rightarrow [0,1]
+\end{equation}
+
+\noindent where
+
+\begin{equation*}
+\begin{aligned}
+p^{(c)}_{X_i}&(x_{i-k}^{i-1},y_{i-k}^{i-1},z_{i-k}^{i-1}) \\
+&\triangleq \mathbb{P}(X_i = 1 \mid X_{i-k}^{i-1} = x_{i-k}^{i-1},Y_{i-k}^{i-1} = y_{i-k}^{i-1},Z_{i-k}^{i-1} = z_{i-k}^{i-1})
+\end{aligned}
+\end{equation*}
+
+\noindent with $p^{(c)}_{Y_i}$ and $p^{(c)}_{Z_i}$ defined similarly.
+
+Focusing on the causal effect of $\{Y\}$ on $\{X\}$, we now define the restricted conditional probability of $X_i$ as $p_{X_i}^{(r)}:\mcal{X}^{i-1} \times \mcal{Z}^{i-1} \rightarrow [0,1]$, where:
+
+\begin{equation*}
+p^{(r)}_{X_i}(x^{i-1},z^{i-1})
+\triangleq \mathbb{P}(X_i = 1 \mid X^{i-1} = x^{i-1},Z^{i-1} = z^{i-1})
+\end{equation*}
+
+It is important to note that the restricted distribution is a function of the \emph{entire} past. This is a result of the fact that the joint-Markovicity of the complete collection of processes does not imply that a subset of the processes will be Markov. To see this, we first note that we can use the Markov property to derive the complete probability as:
+
+\begin{equation*}
+\begin{aligned}
+\mathbb{P}&(X_i = 1 \mid X^{i-1} = x^{i-1},Y^{i-1} = y^{i-1},Z^{i-1} = z^{i-1}) \\
+&= \mathbb{P}(X_i = 1 \mid X_{i-k}^{i-1} = x_{i-k}^{i-1},Y_{i-k}^{i-1} = y_{i-k}^{i-1},Z_{i-k}^{i-1} = z_{i-k}^{i-1}).
+\end{aligned}
+\end{equation*}
+
+\noindent Now, if we attempt to derive the restricted probability of $X_i$ by marginalizing over possible outcomes of $Y^{i-1}$, we get (for compactness, the variables are omitted and only the values are shown):
+
+\begin{equation*}
+\begin{aligned}
+&p_{X_i}^{(r)}(x^{i-1},z^{i-1}) = \sum_{y^{i-1}} \mathbb{P}(x_i,y^{i-1} \mid x^{i-1},z^{i-1}) \\
+&= \sum_{y^{i-1}}
+\mathbb{P}(x_i \mid x^{i-1},y^{i-1} ,z^{i-1})
+\cdot \mathbb{P}(y^{i-1}\mid x^{i-1},z^{i-1}) \\
+&= \sum_{y^{i-1}}
+\mathbb{P}(x_i \mid x_{i-k}^{i-1},y_{i-k}^{i-1} ,z_{i-k}^{i-1})
+\cdot \mathbb{P}(y^{i-1}\mid x^{i-1},z^{i-1}) \\
+\end{aligned}
+\end{equation*}
+
+\begin{comment}
+We begin by demonstrating the estimation of the proposed causal measure on a collection of binary $k^{th}$-order Markov processes $\{X\}$, $\{Y\}$, and $\{Z\}$. In particular, we define the complete history as $H^{(c)}_i =[x_{i-k}^{i-1},y_{i-k}^{i-1},z_{i-k}^{i-1}]^T \in \mathbb{R}^{3 \times k}$, and characterize the complete distribution by the following generalized linear models:
+
+
+\begin{align}
+\mathbb{P}(X_i = 1 | H^{(c)}_i) =
+    \frac{e^{\mu^{(c)}_X + \langle \theta^{(c)}_X, H^{(c)}_i \rangle}}
+    {1+e^{\mu^{(c)}_X + \langle \theta^{(c)}_X, H^{(c)}_i \rangle}} \\
+\mathbb{P}(Y_i = 1 | H^{(c)}_i) =
+    \frac{e^{\mu^{(c)}_Y + \langle \theta^{(c)}_Y, H^{(c)}_i \rangle}}
+    {1+e^{\mu^{(c)}_Y + \langle \theta^{(c)}_Y, H^{(c)}_i \rangle}} \\
+\mathbb{P}(Z_i = 1 | H^{(c)}_i) =
+    \frac{e^{\mu^{(c)}_Z + \langle \theta^{(c)}_Z, H^{(c)}_i \rangle}}
+    {1+e^{\mu^{(c)}_Z + \langle \theta^{(c)}_Z, H^{(c)}_i \rangle}} \\
+\end{align}
+
+\noindent where $\mu^{(c)}_* \in \mathbb{R}$ and $\theta^{(c)}_* \in \mathbb{R}^{3\times k}$ are model parameters and the inner product term may decomposed as:
+
+\begin{equation}
+\langle \theta^{(c)}_*, H^{(c)}_i \rangle =
+    {\theta_{*X}^{(c)}}^T x_{i-k}^{i-1} +
+    {\theta_{*Y}^{(c)}}^T y_{i-k}^{i-1} +
+    {\theta_{*Z}^{(c)}}^T z_{i-k}^{i-1}
+\end{equation}
+
+\noindent with $\theta^{(c)}_{**} \in \mathbb{R}^k$. Focusing without loss of generality on the causal influence of $\{Y\}$ on $\{X\}$, \cyx, we define the restricted history as $H^{(r)}_i =[x_{i-k}^{i-1},z_{i-k}^{i-1}]^T \in \mathbb{R}^{2 \times k}$ and the restricted distribution:
+
+\begin{equation}
+\mathbb{P}(X_i = 1 | H^{(r)}_i) =
+    \frac{e^{\mu^{(r)}_X + \langle \theta^{(r)}_X, H^{(r)}_i \rangle}}
+    {1+e^{\mu^{(r)}_X + \langle \theta^{(r)}_X, H^{(r)}_i \rangle}}
+\end{equation}
+
+\noindent with $\mu^{(r)}_* \in \mathbb{R}$ and $\theta^{(r)}_* \in \mathbb{R}^{2\times k}$ and
+
+\begin{equation}
+\langle \theta^{(r)}_X, H^{(r)}_i \rangle = {\theta_{XX}^{(r)}}^T x_{i-k}^{i-1} + {\theta_{XZ}^{(r)}}^T z_{i-k}^{i-1}.
+\end{equation}
+
+It is clear that $\cyx(i) = 0$ for all $i=1,2,\dots$ if and only if
+\end{comment}

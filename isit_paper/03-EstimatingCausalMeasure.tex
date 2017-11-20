@@ -3,6 +3,44 @@
 \textcolor{red}
 {\begin{itemize}
     \item Sequential Prediction
-    \item Notion of Casaulity Regret
+    \item Notion of causality regret - whereas DI has one value that the Tsachy paper tries to converge to, we are looking more at a sequential prediction problem because we want to estimate causality accurately at every point in time
     \item Theorem
+    \item Independent selection of restricted and complete reference classes - addresses problem with restricted distribution being infinite order raised in Purdon paper
+    \item Discussion of estimating with time varying statistics
+    \item Can be computed online
 \end{itemize}}
+
+Assuming the joint statistics underlying the observed data are unknown, it is necessary to develop methods for estimating the causal measure. As such, an estimate of the causal measure can be obtained by simply estimating the complete and restricted distributions and then computing the KL divergence between the two at each time. Such an estimator allows us to leverage results from the field of sequential prediction.
+
+The sequential prediction problem formulation we consider is as follows: A learner is sequentially observing a sequence $x_1,x_2,\dots,x_n$ over some space of observations $\mc{X}$. At each round, $i$, having observed the sequence $x_1,\dots,x_{i-1}$ (or more generally, the history $\history{i}$, which may include information in addition to $x^{i-1}$), the learner selects a probability assignment $\hat{p}_i \in \mc{P}$, where $\mc{P}$ is the space of probability distributions over $\mc{X}$. Once $\hat{p}_i$ is chosen, $x_i$ is revealed and a loss $l(\hat{p}_i,x_i)$ is incurred by the learner, where the loss function $l:\mc{X}\rightarrow \mathbb{R}$ is chosen to be the self-information loss given by:
+
+\begin{equation}
+l(p,x) = -\log(p(x))
+\end{equation}
+
+The performance of sequential predictors is typically assessed using a notion of \emph{regret} with respect to a reference class of probability distributions $\refclass \subset \mc{P}$. For a given round $i$ and reference distribution $\tilde{p} \in \refclass$, the learner's regret is given by the difference in loss of the chosen probability assignment and the loss of the reference distribution:
+
+\begin{equation}
+r(\tilde{p},x_i) = l(\hat{p}_i,x_i) - l(\tilde{p},x_i)
+\end{equation}
+
+\noindent In many cases the performance of sequential predictors will be measured by the worst case regret, given by:
+
+\begin{equation}
+\begin{aligned}
+R_n(\refclass) &= \sup_{x^n \in \mc{X}^n} \sum_{i=1}^n l(\hat{p}_i,x_i) - \inf_{\tilde{p}\in \refclass} \sum_{i=1}^n l(\tilde{p},x_i) \\
+&= \sup_{x^n \in \mc{X}^n} \sup_{\tilde{p}\in \refclass} \sum_{i=1}^n r(\tilde{p},x_i)
+\end{aligned}
+\end{equation}
+
+\noindent For various learning algorithms (i.e. strategies for selecting $\hat{p}_i$ given $\history{i}$) and reference classes $\tilde{P}$, bounds on the worst case regret can be established as a function of the sequence length $n$:
+
+\begin{equation}
+R_n(\refclass) \le M(n)
+\end{equation}
+
+It follows naturally that an estimator for our causal measure can be constructed by building two sequential predictors. The restricted predictor $\estfxr{i}$ computed at each round using $\hr{i} \triangleq \{x_1,\dots,x_{i-1}\} \cup \{z_1,\dots,z_{i-1}\}$, and the complete predictor $\estfxc{i}$ computed at each round using $\hc{i} \triangleq \{x_1,\dots,x_{i-1}\} \cup \{y_1,\dots,y_{i-1}\} \cup \{z_1,\dots,z_{i-1}\}$. It then follows that each of these predictors will have an associated worst case regret, given by $R^{(r)}_n(\refclassr)$ and $R^{(c)}_n(\refclassc)$, where $\refclassr$ and $\refclassc$ represent the restricted and complete reference classes. Additionally we will define the instantaneous regrets for each of our predictors as $r^{(r)}$ and $r^{(c)}$. Using these sequential predictors, we define our estimated causal influence from $Y$ to $X$ at time $n$ as:
+
+\begin{equation}
+\estcyx(n) = \sum_{i=1}^n \kl{\estfxc{i}}{\estfxr{i}}
+\end{equation}
