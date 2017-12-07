@@ -1,11 +1,17 @@
 \section{Introduction}
 
-\textcolor{red}
-{\begin{itemize}
-    \item Granger Causality
-    \item Directed Information
-    \item Sequential Prediction
-    \item Argument for why sample path causality is important. Perhaps a neuroscientific argument that even if the model is time invariant, there may be certain patterns that induce a greater level of causal influence.
+\begin{comment}
+- Granger Causality
+- Directed Information
+- Transfer Entropy
+- Local Transfer Entropy
+- Sequential Prediction
+- Argument for why sample path causality is important. Perhaps a neuroscientific argument that even if the model is time invariant, there may be certain patterns that induce a greater level of causal influence.
 \end{itemize}}
+\end{comment}
 
+In 1969, Granger \cite{granger1969investigating} built upon the the ideas of Wiener by proposing an approach to identify causal relationships between time series. While his original treatment was applied only to linear regression models, his underlying perspective that a time series $Y^n$ is ``causing'' $X^n$ if we can better predict $Y^n$ given all information than given all information excluding $X^n$ is still utilized throughout causality research. More modern information theoretic interpretations of this principle include directed information (DI) \cite{marko1973bidirectional,massey1990causality} and transfer entropy (TE) \cite{schreiber2000measuring}, which is equivalent to Granger causality for Gaussian autoregressive processes \cite{barnett2009granger}. Both of these quantities measure the reduction in uncertainty (i.e. conditional entropy) of the future of $X^n$ that is obtained by including $Y^n$ in the available information in an appropriate sense. Interestingly, both quantities are determined by taking expectations over all sequences, and thus are dependent solely on a system's underlying distribution and not a given realization of the collection of processes.
 
+These quantities may be adapted to incorporate a notion of locality through use of \emph{self-information}. For a given realization $x$ of a random variable $X\sim f_X$, the self-information is given by $h(x) \triangleq -\log(f_X(x))$ and represents the amount of surprise associated with that realization. By replacing entropy with self-information (and its conditional form), local versions of DI, TE, and there conditional extensions may be obtained (see Table 1 in \cite{lizier2014jidt} for detailed definitions). While the local extensions of DI and TE are indeed dependent on realizations, they may take on negative values, which does not yield a clear interpretation with regard to causality.
+
+\textcolor{red}{TO BE CONTINUED...}

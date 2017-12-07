@@ -1,19 +1,18 @@
 \section{Simulations}
 
-\textcolor{red}
-{\begin{itemize}
-    \item Application to conditional bernoulli model using CTW algorithm (Fig 1)
-    \item Explicit derivation of bounds and computation of regret
-    \item Use changing environment meta algorithm for changing parameters to demonstrate that it appears to work even though theorem doesn't apply (Fig 2)
-\end{itemize}}
+\begin{comment}
+- Application to conditional bernoulli model using CTW algorithm (Fig 1)
+- Explicit derivation of bounds and computation of regret
+- Use changing environment meta algorithm for changing parameters to demonstrate that it appears to work even though theorem doesn't apply (Fig 2)
+\end{comment}
 
-We begin by demonstrating the estimation of the proposed causal measure on a collection of jointly $k^{th}$-order Markov binary processes $\{X\}$, $\{Y\}$, and $\{Z\}$. In particular, for each of the three processes, we fully characterize the conditional pmf by the probability of observing a one given the most recent $k$ samples of all three processes:
+We begin by demonstrating the estimation of the proposed causal measure on a collection of jointly $k^{th}$-order Markov binary processes $X^n$, $Y^n$, and $Z^n$. In particular, for each of the three processes, we fully characterize the conditional pmf by the probability of observing a one given the most recent $k$ samples of all three processes:
 
 \begin{equation}
 p^{(c)}_{X_i},p^{(c)}_{Y_i},p^{(c)}_{Z_i} : \mcal{X}^k \times \mcal{Y}^k \times \mcal{Z}^k \rightarrow [0,1]
 \end{equation}
 
-\noindent where
+\noindent where \mcal{X}=\mcal{Y}=\mcal{Z}=\{0,1\} and
 
 \begin{equation*}
 \begin{aligned}
@@ -31,7 +30,10 @@ p^{(r)}_{X_i}(x^{i-1},z^{i-1})
 \triangleq \mathbb{P}(X_i = 1 \mid X^{i-1} = x^{i-1},Z^{i-1} = z^{i-1})
 \end{equation*}
 
-It is important to note that the restricted distribution is a function of the \emph{entire} past. This is a result of the fact that the joint-Markovicity of the complete collection of processes does not imply that a subset of the processes will be Markov. To see this, we first note that we can use the Markov property to derive the complete probability as:
+It is important to note that the restricted distribution is a function of the \emph{entire} past. This is a result of the fact that the joint-Markovicity of the complete collection of processes does not imply that a subset of the processes will be Markov.
+
+\begin{comment}
+To see this, we first note that we can use the Markov property to derive the complete probability as:
 
 \begin{equation*}
 \begin{aligned}
@@ -53,6 +55,9 @@ It is important to note that the restricted distribution is a function of the \e
 \cdot \mathbb{P}(y^{i-1}\mid x^{i-1},z^{i-1}) \\
 \end{aligned}
 \end{equation*}
+\end{comment}
+
+\textcolor{red}{TO BE CONTINUED...}
 
 \begin{comment}
 We begin by demonstrating the estimation of the proposed causal measure on a collection of binary $k^{th}$-order Markov processes $\{X\}$, $\{Y\}$, and $\{Z\}$. In particular, we define the complete history as $H^{(c)}_i =[x_{i-k}^{i-1},y_{i-k}^{i-1},z_{i-k}^{i-1}]^T \in \mathbb{R}^{3 \times k}$, and characterize the complete distribution by the following generalized linear models:
