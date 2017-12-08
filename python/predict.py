@@ -104,10 +104,12 @@ class Node():
 
     def add_count(self,count):
         if count == 0:
-            self.pe = ((self.zeros+0.5)/(self.zeros+self.ones+1))*self.pe
+            self.pe = ((self.zeros+0.5)/ \
+                (self.zeros+self.ones+1))*self.pe
             self.zeros += 1
         else:
-            self.pe = ((self.ones+0.5)/(self.zeros+self.ones+1))*self.pe
+            self.pe = ((self.ones+0.5)/ \
+                (self.zeros+self.ones+1))*self.pe
             self.ones += 1
 
     def get_child(self,symbol):

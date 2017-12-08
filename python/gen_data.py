@@ -7,7 +7,8 @@ import numpy as np
 # params - N x K+1 matrix (None => random)
 # seed - random seed to use for params (None => random)
 ##############################
-def gen_bernoulli(N,T,K,params=None,biases=None,seed=None):
+def gen_bernoulli(N,T,K,params=None,biases=None,
+                seed=None,ret_r_probs=False):
 
     if params is not None:
         # For each of the N sequences, need NxK coeffs
@@ -39,4 +40,21 @@ def gen_bernoulli(N,T,K,params=None,biases=None,seed=None):
             sequences[n,t] = np.random.binomial(1,prob)
     sequences = sequences[:,K:]
 
-    return (sequences,probs)
+    if(ret_r_probs):
+        r_probs = get_marg_probs(N,T,K,biases,params)
+        return (sequences,probs,r_probs)
+
+    else:
+        return (sequences,probs)
+
+# Get the restricted probs (assuming Z and Y are iid)
+def get_r_probs(N,T,K,sequences,biases,params):
+    py = np.exp(-biases[1])/(1+np.exp(-biases[1]))
+    pz = np.exp(-biases[2])/(1+np.exp(-biases[2]))
+    for t in range(T):
+        samples = sequnces[:,t]
+        x = samples[0]
+        y = samples[1]
+        z = samples[2]
+
+
