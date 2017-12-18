@@ -1,4 +1,4 @@
-\section{Estimation of the Causal Measure}
+\section{Estimation of the Causal Measure} \label{estimation}
 
 \begin{comment}
 - Sequential Prediction
@@ -56,12 +56,19 @@ CR(n) \triangleq \sum_{i=1}^n \left| \estcyx(i) - \optcyx(i)  \right|
 
 \noindent with $\optfxc{i} \in \refclass^{(c)}$ and $\optfxr{i} \in \refclass^{(r)}$ defined as the loss minimizing distributions from the complete and restricted reference classes. We note that with this notion of causal regret, the estimated causal measure is being compared against the best estimate of the causal measure from within a reference class. As such, we limit our consideration to the scenario in which the reference classes are sufficiently representative of the true sequences to produce a desirable $\optcyx$ (i.e. $\optcyx(i) \approx \cyx(i)$ for all $i$).
 
-We now present the necessary preliminaries for proving a finite sample bound on the estimates of causality regret for the special case when $\mc{X}$ is a discrete space. We begin by introducing an assumption that requires the underlying sequence and the complete and restricted sequential predictors to be well-behaved in an appropriate sense.
+We now present the necessary preliminaries for proving a finite sample bound on the estimates of causality regret for the special case when $\mc{X}$ is a discrete space. We begin by introducing two assumptions that requires the underlying sequence, the complete and restricted sequential predictors, and the loss minimizing distributions to be well-behaved in an appropriate sense.
 
 \begin{assumption} \label{assumption:gbound}
 For sequential predictors \estfxc{i} and \estfxr{i}, we assume that the collection of observations is such that:
 \begin{equation}
 \sup_{x \in \mc{X}} \log \frac{\estfxc{i}(x)}{\estfxr{i}(x)} < L \ \ \forall i=1,\dots,n
+\end{equation}
+\end{assumption}
+
+\begin{assumption} \label{assumption:referencekl}
+For loss minimizing distributions $\optfxc{i} \in \refclass^{(c)}$ and $\optfxr{i} \in \refclass^{(r)}$ and restricted sequential predictor \estfxr{i}, assume that for all $i$:
+\begin{equation}
+\kl{\optfxc{i}}{\optfxr{i}} \le \kl{\optfxc{i}}{\estfxr{i}}
 \end{equation}
 \end{assumption}
 
