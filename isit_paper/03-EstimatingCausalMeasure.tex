@@ -100,7 +100,7 @@ For a sequential predictor $\hat{f}_i$ with worst case regret $M(n)$, a collecti
 
 Next, we bound the cumulative difference in expectation of a bounded function between the best reference distribution and sequential predictor.
 
-\begin{lemma}
+\begin{lemma} \label{lemma:g_func}
 For a sequential predictor $\hat{f}_i$ with worst case regret $M(n)\ge 1$, a collection observations $(x^n,y^n,z^n)$, cumulative loss minimizing distribution $f^*_i$, and bounded functions $g_i:\mc{X}\rightarrow [-K,K]$ with $K\in\mathbb{R}$:
 
 \begin{equation}
@@ -147,7 +147,7 @@ Let the worst case regret for the predictors $\estfxr{i}$ and $\estfxc{i}$ be bo
 
 \begin{equation} \label{causal_bound}
 \begin{aligned}
-\sum_{i=1}^n & \left| \estcyx(n) - \optcyx(n) \right| \le \\
+\sum_{i=1}^n & \left| \estcyx(i) - \optcyx(i) \right| \le \\
 &M^{(r)}(n) + M^{(c)}(n) +
     \frac{\left|\mc{X}\right|L}{\sqrt{2}}\sqrt{n \cdot M^{(c)}(n)}
 \end{aligned}
@@ -155,36 +155,80 @@ Let the worst case regret for the predictors $\estfxr{i}$ and $\estfxc{i}$ be bo
 \end{theorem}
 
 \begin{proof}
-\textcolor{red}
-{Proof is all done except for showing:
+We begin by defining the functions:
+
 \begin{equation}
-\sum_{i=1}^n \left| E_{\optfxc{i}} \left[
-\log \frac{\optfxr{i}(X)}{\estfxr{i}(X)} \right] \right| \le M^{(r)}(n)
+\hat{g}_i(X) \triangleq \log \frac{\estfxc{i}(X)}{\estfxr{i}(X)} \ \ \ \ \
+g^*_i(X) \triangleq \log \frac{\optfxc{i}(X)}{\optfxr{i}(X)}.
 \end{equation}
-\noindent which we can see is basically lemma 1 only it's not quite a KL divergence... We can easily say that that non-absolute value is less than the regret, but the only issue is if \optfxc{i} is closer to \estfxr{i} than it is to \optfxr{i}, then we don't know how large of a negative value the information density would take... I think it should be possible to show, just gotta think a little more.
-\emph{Update}:
-Note that:
-\begin{equation}
-E_{\optfxc{i}} \left[
-\log \frac{\optfxr{i}(X)}{\estfxr{i}(X)} \right] =
-\kl{\optfxc{i}}{\estfxr{i}} - \kl{\optfxc{i}}{\optfxr{i}}
-\end{equation}
-Thus, if we can show that:
-$$\kl{\optfxc{i}}{\optfxr{i}} \le \kl{\optfxc{i}}{\estfxr{i}}$$
-then we get that $E_{\optfxc{i}} \left[\log \frac{\optfxr{i}(X)}{\estfxr{i}(X)} \right] \ge 0$ and:
-\begin{equation}
-\begin{aligned}
-\sum_{i=1}^n \left| E_{\optfxc{i}} \left[
-\log \frac{\optfxr{i}(X)}{\estfxr{i}(X)} \right] \right|
-&= \sum_{i=1}^n E_{\optfxc{i}} \left[
-\log \frac{\optfxr{i}(X)}{\estfxr{i}(X)} \right] \\
-&= \sum_{i=1}^n  \sum_{x\in\mc{X}} \optfxc{i}(x)
-\log \frac{\optfxr{i}(x)}{\estfxr{i}(x)} \\
-&\le  \sum_{i=1}^n \sup_{x\in\mc{X}} \log \frac{\optfxr{i}(x)}{\estfxr{i}(x)} \sum_{x'\in\mc{X}} \optfxc{i}(x') \\
-&= \sum_{i=1}^n \sup_{x\in\mc{X}} \log \frac{\optfxr{i}(x)}{\estfxr{i}(x)} \\
-&\le \sup_{x^n\in\mc{X}^n} \sum_{i=1}^n \log \frac{\optfxr{i}(x_i)}{\estfxr{i}(x_i)} \\
-&\le M^{(r)}(n)
-\end{aligned}
-\end{equation}
-}
+
+\noindent Using the definition of the causal measure and KL-divergence:
+
+\begin{align}
+&\sum_{i=1}^n \left| \estcyx(i) - \optcyx(i) \right|
+\nonumber \\
+& \ \ \ \ \ \ \ \ \ \ - \left|
+E_{\optfxc{i}}\left[ \hat{g}_i(X)\right] -
+E_{\estfxc{i}}\left[ \hat{g}_i(X)\right]
+\right| \label{beginning} \\
+&= \sum_{i=1}^n
+\left|
+E_{\optfxc{i}}\left[ g^*_i(X)\right] -
+E_{\estfxc{i}}\left[ \hat{g}_i(X)\right]
+\right| \nonumber \\
+& \ \ \ \ \ \ \ \ \ \ - \left|
+E_{\optfxc{i}}\left[ \hat{g}_i(X)\right] -
+E_{\estfxc{i}}\left[ \hat{g}_i(X)\right]
+\right| \\
+&= \sum_{i=1}^n
+\bigg| \left|
+E_{\optfxc{i}}\left[ g^*_i(X)\right] -
+E_{\estfxc{i}}\left[ \hat{g}_i(X)\right]
+\right| \nonumber \\
+& \ \ \ \ \ \ \ \ \ \ - \left|
+E_{\optfxc{i}}\left[ \hat{g}_i(X)\right] -
+E_{\estfxc{i}}\left[ \hat{g}_i(X)\right]
+\right| \bigg| \\
+&\le \sum_{i=1}^n
+\bigg|
+E_{\optfxc{i}}\left[ g^*_i(X)\right] -
+E_{\estfxc{i}}\left[ \hat{g}_i(X)\right] \nonumber \\
+& \ \ \ \ \ \ \ \ \ \ -
+E_{\optfxc{i}}\left[ \hat{g}_i(X)\right] +
+E_{\estfxc{i}}\left[ \hat{g}_i(X)\right] \bigg| \label{rev_tri} \\
+&= \sum_{i=1}^n \left|
+E_{\optfxc{i}}\left[ g^*_i(X) - \hat{g}_i(X)\right] \right| \\
+&= \sum_{i=1}^n \left|
+E_{\optfxc{i}}\left[
+\log \frac{\optfxc{i}(X)}{\estfxc{i}(X)}
+- \log \frac{\optfxr{i}(X)}{\estfxr{i}(X)}
+\right] \right| \\
+&\le \sum_{i=1}^n \left|
+\kl{\optfxc{i}}{\estfxc{i}} \right| \nonumber \\
+& \ \ \ \ \ \ \ \ \ \ +
+\left|
+\kl{\optfxc{i}}{\estfxr{i}} -
+\kl{\optfxc{i}}{\optfxr{i}}
+\right| \label{tri} \\
+&\le \sum_{i=1}^n
+\kl{\optfxc{i}}{\estfxc{i}} +
+\kl{\optfxc{i}}{\estfxr{i}} \label{assumption2} \\
+&\le M^{(c)}(n) + M^{(r)}(n) \label{regretlemma}
+\end{align}
+
+\noindent where \eqref{rev_tri} follows from the reverse triangle inequality, \eqref{tri} follows from the triangle inequality, \eqref{assumption2} follows from Assumption \ref{assumption:referencekl} and non-negativity of the KL-divergence, and \eqref{regretlemma} follows from Lemma \ref{lemma:kl}. Moving the second term of \eqref{beginning} to the other side of the inequality yields:
+
+\begin{align}
+\sum_{i=1}^n & \left| \estcyx(i) - \optcyx(i) \right| \nonumber \\
+& \le M^{(c)}(n) + M^{(r)}(n) + \left|
+E_{\optfxc{i}}\left[ \hat{g}_i(X)\right] -
+E_{\estfxc{i}}\left[ \hat{g}_i(X)\right]
+\right| \nonumber \\
+& \le M^{(c)}(n) + M^{(r)}(n) +
+\frac{\left|\mc{X}\right|L}{\sqrt{2}}\sqrt{n \cdot M^{(c)}(n)}
+\label{final_eq}
+\end{align}
+
+\noindent where \eqref{final_eq} follows from Assumption \ref{assumption:gbound} and Lemma \ref{lemma:g_func}. This concludes the proof.
+
 \end{proof}
