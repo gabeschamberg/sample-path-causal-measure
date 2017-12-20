@@ -180,7 +180,7 @@ E_{\estfxc{i}}\left[ \hat{g}_i(X)\right]
 E_{\optfxc{i}}\left[ \hat{g}_i(X)\right] -
 E_{\estfxc{i}}\left[ \hat{g}_i(X)\right]
 \right| \\
-&= \sum_{i=1}^n
+&\le \sum_{i=1}^n
 \bigg| \left|
 E_{\optfxc{i}}\left[ g^*_i(X)\right] -
 E_{\estfxc{i}}\left[ \hat{g}_i(X)\right]
@@ -188,7 +188,7 @@ E_{\estfxc{i}}\left[ \hat{g}_i(X)\right]
 & \ \ \ \ \ \ \ \ \ \ - \left|
 E_{\optfxc{i}}\left[ \hat{g}_i(X)\right] -
 E_{\estfxc{i}}\left[ \hat{g}_i(X)\right]
-\right| \bigg| \\
+\right| \bigg| \label{absval} \\
 &\le \sum_{i=1}^n
 \bigg|
 E_{\optfxc{i}}\left[ g^*_i(X)\right] -
@@ -216,19 +216,20 @@ E_{\optfxc{i}}\left[
 &\le M^{(c)}(n) + M^{(r)}(n) \label{regretlemma}
 \end{align}
 
-\noindent where \eqref{rev_tri} follows from the reverse triangle inequality, \eqref{tri} follows from the triangle inequality, \eqref{assumption2} follows from Assumption \ref{assumption:referencekl} and non-negativity of the KL-divergence, and \eqref{regretlemma} follows from Lemma \ref{lemma:kl}. Moving the second term of \eqref{beginning} to the other side of the inequality yields:
+\noindent where \eqref{absval} follows from the properties of absolute value, \eqref{rev_tri} follows from the reverse triangle inequality, \eqref{tri} follows from the triangle inequality, \eqref{assumption2} follows from Assumption \ref{assumption:referencekl} and non-negativity of the KL-divergence, and \eqref{regretlemma} follows from Lemma \ref{lemma:kl}. Moving the second term of \eqref{beginning} to the other side of the inequality yields:
 
 \begin{align}
-\sum_{i=1}^n & \left| \estcyx(i) - \optcyx(i) \right| \nonumber \\
-& \le M^{(c)}(n) + M^{(r)}(n) + \left|
+&\sum_{i=1}^n \left| \estcyx(i) - \optcyx(i) \right| \nonumber \\
+& \ \ \le M^{(c)}(n) + M^{(r)}(n) + \left|
 E_{\optfxc{i}}\left[ \hat{g}_i(X)\right] -
 E_{\estfxc{i}}\left[ \hat{g}_i(X)\right]
 \right| \nonumber \\
-& \le M^{(c)}(n) + M^{(r)}(n) +
+& \ \ \le M^{(c)}(n) + M^{(r)}(n) +
 \frac{\left|\mc{X}\right|L}{\sqrt{2}}\sqrt{n \cdot M^{(c)}(n)}
 \label{final_eq}
 \end{align}
 
-\noindent where \eqref{final_eq} follows from Assumption \ref{assumption:gbound} and Lemma \ref{lemma:g_func}. This concludes the proof.
+\noindent where \eqref{final_eq} follows from Assumption \ref{assumption:gbound} (boundedness of $\hat{g}_i$) and Lemma \ref{lemma:g_func}. This concludes the proof.
 
 \end{proof}
+

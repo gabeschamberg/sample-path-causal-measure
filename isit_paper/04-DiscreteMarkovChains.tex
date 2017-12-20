@@ -6,7 +6,43 @@
 - Use changing environment meta algorithm for changing parameters to demonstrate that it appears to work even though theorem doesn't apply (Fig 2)
 \end{comment}
 
-We begin by demonstrating the estimation of the proposed causal measure on a collection of jointly $k^{th}$-order Markov binary processes $X^n$, $Y^n$, and $Z^n$. In particular, for each of the three processes, we fully characterize the conditional pmf by the probability of observing a one given the most recent $k$ samples of all three processes:
+\begin{figure*}
+\includegraphics[width=\linewidth]{results}
+\caption{True causal measure (top) and estimated causal measure (bottom) for entire time series (left) and selections pre (center) and post (right) parameter change point.}
+\label{fig:results}
+\end{figure*}
+
+We begin by demonstrating the estimation of the proposed causal measure on a pair of jointly Markov binary processes $X^n$ and $Y^n$ that undergo a change point in the underlying parameters. For $j\in \{1,2\}$, we use a logistic model to represent the probabilities that $X_i$ and $Y_i$ are equal to one given the complete history:
+
+\begin{align}
+p_{X_i}^{(c)}(x_{i-1},y_{i-1}) \triangleq
+\frac{e^{\theta^j_x+\theta^j_{xx}x_{i-1}+\theta^j_{yx}y_{i-1}}}
+{1+e^{\theta^j_x + \theta^j_{xx}x_{i-1}+ \theta^j_{yx}y_{i-1}}} \\
+p_{Y_i}^{(c)}(x_{i-1},y_{i-1}) \triangleq
+\frac{e^{\theta^j_y + \theta^j_{yy}y_{i-1}+ \theta^j_{xy}x_{i-1}}}
+{1+e^{\theta^j_y + \theta^j_{yy}y_{i-1}+ \theta^j_{xy}x_{i-1}}}
+\end{align}
+
+\noindent To compute the true causal measure, we additionally need the restricted probabilities. It is important to note that the joint-Markovicity does not imply that the processes are individually Markov. As such, the restricted probability that $X_i$ is equal to one given the restricted history is defined using a recursively updated distribution over the hidden $Y_i$:
+
+\begin{eqnarray}
+p_{X_i}^{(r)}(x^{i-1}) \triangleq
+p^{(h)}_{Y_{i-1}}\cdot p_{X_i}^{(c)}(x_{i-1},1) +
+\bar{p}^{(h)}_{Y_{i-1}}\cdot p_{X_i}^{(c)}(x_{i-1},0)
+\\
+p^{(h)}_{Y_i} \triangleq
+p^{(h)}_{Y_{i-1}}\cdot p_{Y_i}^{(c)}(x_{i-1},1) +
+\bar{p}^{(h)}_{Y_{i-1}}\cdot p_{Y_i}^{(c)}(x_{i-1},0)
+\end{eqnarray}
+
+\noindent where $p^{(h)}_{Y_i}$ is the probability of the \emph{hidden} $Y_i$ being one and $\bar{p}^{(h)}_{Y_i} \triangleq 1-p^{(h)}_{Y_i}$. We can define $p_{Y_i}^{(r)}(y^{i-1})$ analogously using $p^{(h)}_{X_i}$.
+
+To estimate the causal measure (in both directions) we estimate both the complete and restricted probabilities using a Bayesian updating scheme over a discretized parameter space with a uniform prior. To accommodate the parameter change point, we incorporate the shrinking to the prior technique with $\alpha=0$ and $\lambda=0.999$ \cite{sancetta2012universality} to the updating procedure. For space considerations we have omitted further details of experiments and provide detailed code on Github\footnote{link to notebook here}.
+
+Figure \ref{fig:results} shows both the true and estimated causal measure. We can see in the zoomed sections that while the causal measure is consistently underestimated, the spikes in causal influence are captured by the estimate. This example illustrates that the proposed causal measure is not immune to the difficulties of change point scenarios in that it takes roughly 100 samples after the change point for the estimator to adapt. However, a key point is that once the estimator does adapt, the temporal resolution is much better than what could be expected from windowing techniques, as the infrequent spikes seen in rightmost column of Figure \ref{fig:results} would be smoothed out.
+
+\begin{comment}
+In particular, for each of the processes, we fully characterize the conditional pmf by the probability of observing a one given the most recent $k$ samples of all three processes:
 
 \begin{equation}
 p^{(c)}_{X_i},p^{(c)}_{Y_i},p^{(c)}_{Z_i} : \mcal{X}^k \times \mcal{Y}^k \times \mcal{Z}^k \rightarrow [0,1]
@@ -31,6 +67,7 @@ p^{(r)}_{X_i}(x^{i-1},z^{i-1})
 \end{equation*}
 
 It is important to note that the restricted distribution is a function of the \emph{entire} past. This is a result of the fact that the joint-Markovicity of the complete collection of processes does not imply that a subset of the processes will be Markov.
+\end{comment}
 
 \begin{comment}
 To see this, we first note that we can use the Markov property to derive the complete probability as:
@@ -56,8 +93,6 @@ To see this, we first note that we can use the Markov property to derive the com
 \end{aligned}
 \end{equation*}
 \end{comment}
-
-\textcolor{red}{TO BE CONTINUED...}
 
 \begin{comment}
 We begin by demonstrating the estimation of the proposed causal measure on a collection of binary $k^{th}$-order Markov processes $\{X\}$, $\{Y\}$, and $\{Z\}$. In particular, we define the complete history as $H^{(c)}_i =[x_{i-k}^{i-1},y_{i-k}^{i-1},z_{i-k}^{i-1}]^T \in \mathbb{R}^{3 \times k}$, and characterize the complete distribution by the following generalized linear models:
