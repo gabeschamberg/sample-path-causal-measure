@@ -6,9 +6,9 @@ from copy import deepcopy
 # target - which sequence to try and predict (can be 0,1,...,N-1)
 # depth - depth of context tree
 ##############################
-def ctw(sequences,target=0,depth=3,debug=False):
+def ctw(sequences,target=0,depth=3,debug=False,alphabet=2):
     (N,T) = sequences.shape
-    tree = Tree(max_depth=depth,nsymbols=2**N,debug=debug)
+    tree = Tree(max_depth=depth,nsymbols=alphabet**N,debug=debug)
     probs = []
     pes = []
     context = deque([0]*depth)
